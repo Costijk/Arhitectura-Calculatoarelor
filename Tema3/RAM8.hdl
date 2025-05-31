@@ -1,19 +1,20 @@
 CHIP RAM8 {
     IN in[16], load;
     IN address[3];
+    IN clk;
     OUT out[16];
 
     PARTS:
-    DMux8Way(in=load, sel=address, a=la, b=lb, c=lc, d=ld, e=le, f=lf, g=lg, h=lh);
+    DMux8Way(in=load, sel=address, a=load0, b=load1, c=load2, d=load3, e=load4, f=load5, g=load6, h=load7);
 
-    RAM64(in=in, load=la, address=address, out=oa);
-    RAM64(in=in, load=lb, address=address, out=ob);
-    RAM64(in=in, load=lc, address=address, out=oc);
-    RAM64(in=in, load=ld, address=address, out=od);
-    RAM64(in=in, load=le, address=address, out=oe);
-    RAM64(in=in, load=lf, address=address, out=of);
-    RAM64(in=in, load=lg, address=address, out=og);
-    RAM64(in=in, load=lh, address=address, out=oh);
+    Register(in=in, load=load0, clk=clk, out=out0);
+    Register(in=in, load=load1, clk=clk, out=out1);
+    Register(in=in, load=load2, clk=clk, out=out2);
+    Register(in=in, load=load3, clk=clk, out=out3);
+    Register(in=in, load=load4, clk=clk, out=out4);
+    Register(in=in, load=load5, clk=clk, out=out5);
+    Register(in=in, load=load6, clk=clk, out=out6);
+    Register(in=in, load=load7, clk=clk, out=out7);
 
-    Mux8Way16(a=oa, b=ob, c=oc, d=od, e=oe, f=of, g=og, h=oh, sel=address, out=out);
+    Mux8Way16(a=out0, b=out1, c=out2, d=out3, e=out4, f=out5, g=out6, h=out7, sel=address, out=out);
 }
